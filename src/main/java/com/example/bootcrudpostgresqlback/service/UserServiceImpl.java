@@ -4,6 +4,7 @@ import com.example.bootcrudpostgresqlback.entity.User;
 import com.example.bootcrudpostgresqlback.record.UserDTO;
 import com.example.bootcrudpostgresqlback.repository.UserRepository;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,11 @@ public class UserServiceImpl implements UserService {
   @Override
   public List<UserDTO> getAllUsers() {
     return userRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
+  }
+
+  @Override
+  public Optional<UserDTO> getUserById(Long id) {
+    return userRepository.findById(id).map(this::convertToDTO);
   }
 
   private UserDTO convertToDTO(User user) {
