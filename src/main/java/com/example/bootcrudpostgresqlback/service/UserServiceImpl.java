@@ -29,6 +29,28 @@ public class UserServiceImpl implements UserService {
     return userRepository.findById(id).map(this::convertToDTO);
   }
 
+  @Override
+  public UserDTO createUser(UserDTO userDTO) {
+    User user = convertToEntity(userDTO);
+    User savedUser = userRepository.save(user);
+    return convertToDTO(savedUser);
+  }
+
+  @Override
+  public UserDTO updateUser(Long id, UserDTO userDTO) {
+    User user = userRepository.findById(id).orElseThrow();
+    user.setName(userDTO.name());
+    User updatedUser = userRepository.save(user);
+    return convertToDTO(updatedUser);
+  }
+
+  @Override
+  public UserDTO deleteUser(Long id) {
+    User user = userRepository.findById(id).orElseThrow();
+    userRepository.delete(user);
+    return convertToDTO(user);
+  }
+
   private UserDTO convertToDTO(User user) {
     return new UserDTO(user.getId(), user.getName());
   }
